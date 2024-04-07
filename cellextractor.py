@@ -2,6 +2,8 @@ import sys
 import cv2
 import numpy as np
 import pytesseract
+import pandas as pd
+from generate_table import generate_table
 
 
 def load_image(file_name):
@@ -11,7 +13,7 @@ def load_image(file_name):
     return image
 
 
-def resize_image(image, new_width=1550):
+def resize_image(image, new_width=1600):
     height, width = image.shape[0], image.shape[1]
     ratio = width / height
     new_height = int(new_width / ratio)
@@ -33,17 +35,45 @@ def get_contours(thresh, max_area=50000, min_area=1000):
             cells_contours.append(contour)
     return cells_contours
 
+def remove_table_lines(image, resized_image):
+    # inverted_image = cv2.bitwise_not(image)
+    # cv2.imshow('result', resized_image)
+    # cv2.waitKey()
+    hor = np.array([[1, 1, 1, 1, 1, 1, 1]])
+    vertical_lines_eroded_image = cv2.erode(image, hor, iterations=10)
+    vertical_lines_eroded_image = cv2.dilate(vertical_lines_eroded_image, hor, iterations=10)
+    ver = np.array([[1],
+                    [1],
+                    [1],
+                    [1],
+                    [1],
+                    [1],
+                    [1]])
+    horizontal_lines_eroded_image = cv2.erode(image, ver, iterations=10)
+    horizontal_lines_eroded_image = cv2.dilate(horizontal_lines_eroded_image, ver, iterations=10)
+    combined_image = cv2.add(vertical_lines_eroded_image, horizontal_lines_eroded_image)
+    # cv2.imshow('result', combined_image)
+    # cv2.waitKey()
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
+    combined_image_dilated = cv2.dilate(combined_image, kernel, iterations=2)
+    resized_image = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
+    resized_image = cv2.bitwise_not(resized_image)
+    image_without_lines = cv2.subtract(resized_image, combined_image_dilated)
+    result = cv2.bitwise_not(image_without_lines)
+    # cv2.imshow('result', image_without_lines)
+    # cv2.waitKey()
+    return result
 
 def word_search(image, image_output):
     kernel = np.ones((2, 3), np.uint8)
-    image_temp = cv2.morphologyEx(image, cv2.MORPH_CLOSE, kernel, iterations=3)
+    # image_temp = cv2.morphologyEx(image, cv2.MORPH_CLOSE, kernel, iterations=3)
     #kernel = np.ones((1, 5), np.uint8)
     #image_temp = cv2.dilate(image, kernel, iterations=3)
-    contours = cv2.findContours(image_temp, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
+    contours = cv2.findContours(image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
     text = []
     for contour in contours:
         x, y, w, h = cv2.boundingRect(contour)
-        cropped = image_output[y-4:y+h, x-1:x+w]
+        cropped = image_output[y:y+h, x:x+w]
         if cropped.shape[0] == 0 or cropped.shape[1] == 0:
             break
         cropped = cv2.copyMakeBorder(cropped, 10, 10, 10, 10, cv2.BORDER_CONSTANT, value=(255, 255, 255))
@@ -65,31 +95,31 @@ if __name__ == '__main__':
     image = load_image(sys.argv[1])
     resized_image = resize_image(image)
     thresh = binarization_image(resized_image)
+    image_without_lines = remove_table_lines(thresh, resized_image)
+    # image_without_lines = cv2.bitwise_not(image_without_lines)
     contours = get_contours(thresh)
     cropped = None
     mask = np.zeros(thresh.shape, dtype=np.uint8)
-    # masks = []
+    cells = []
     for contour in contours:
         #cv2.drawContours(resized_image, [contour], -1, (255, 255, 255), -1)
-        #mask = np.zeros(thresh.shape, dtype=np.uint8)
+        # mask = np.zeros(thresh.shape, dtype=np.uint8)
         x, y, w, h = cv2.boundingRect(contour)
         #print(x, y, w, h)
-        #cropped, text = word_search(thresh[y+3:y+h-3, x+3:x+w-3], resized_image[y+3:y+h-3, x+3:x+w-3])
-        #text = get_text(resized_image[y+3:y+h-3, x+3:x+w-3])
-        #print(text)
+        # cropped, text = word_search(image_without_lines[y:y+h, x:x+w], resized_image[y:y+h, x:x+w])
+        text = get_text(image_without_lines[y:y+h, x:x+w])
+        cells.append((x, y, x + w, y + h, text))
+        print(text)
         #print(cropped.shape)
         #mask = np.zeros(resized_image.shape, dtype=np.uint8)
         cv2.drawContours(mask, [contour], -1, (255, 255, 255), -1)
-        cropped = cv2.bitwise_and(thresh, mask)
-        cropped[mask==0] = 255
-        cv2.imshow('cell', cropped)
-        cv2.waitKey(160)
-        #cropped, text = word_search(thresh[y+3:y+h-3, x+3:x+w-3], resized_image[y+3:y+h-3, x+3:x+w-3])
-        #print(text)
-        #masks.append(mask)
-        #cell = cv2.bitwise_and(thresh, mask)
-        #cell[mask==0] = 255
-        #print(get_text(resized_image[y+5:y+h-5, x+5:x+w-5], config))
+        x, y, w, h = cv2.boundingRect(contour)
+        cv2.drawContours(mask, [contour], -1, (255, 255, 255), -1)
+        cropped = cv2.bitwise_and(image_without_lines, mask)
+        cropped[mask == 0] = 255
+        # cv2.imshow('cell', cropped)
+        # cv2.waitKey(160)
         #exit()
-    #cv2.imshow('invert', cropped)
-    #cv2.waitKey()
+    generate_table(cells)
+    cv2.imshow('invert', cropped)
+    cv2.waitKey()
