@@ -54,7 +54,24 @@ function send_btn_click()
   var fd = new FormData();
   fd.append('mode', mode);
   fd.append('file', blob);
-  
+
+  request.onload = function() {
+    if(request.status == 200) {
+        // Получаем ответ сервера в виде Blob (файла)
+        var fileBlob = request.response;
+
+        // Создаем ссылку для скачивания файла
+        var url = URL.createObjectURL(fileBlob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'excel_tables.zip'; // Указываем имя файла для скачивания
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+  };
+
   request.onerror = function() {
       alert('Ошибка соединения');
   }

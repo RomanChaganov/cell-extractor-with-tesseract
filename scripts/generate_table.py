@@ -3,6 +3,7 @@ import pandas as pd
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
 
+
 def group_and_replace(array):
     if len(array) == 0:
         return np.array([])
@@ -25,24 +26,29 @@ def group_and_replace(array):
     column_numbers = []
     alphabet = 'abcdefghijklmnopqrstuvwxyz'
     line_number = 0
+    additional = ''
     # Замена чисел в каждой группе на их среднее значение
     for group in groups:
         avg_value = np.mean(group)
         for i in range(len(group)):
             group[i] = avg_value
-            column_numbers.append(alphabet[i].upper()+str(line_number+1))
+            if i > len(alphabet)-1:
+                additional = alphabet[i//len(alphabet)].upper()
+            column_numbers.append(additional+alphabet[i % len(alphabet)].upper()+str(line_number+1))
         line_number += 1
 
     result = np.concatenate(groups)
 
     return result, column_numbers
 
+
 def as_text(value):
     if value is None:
         return ""
     return str(value)
 
-def generate_table(cells):
+
+def generate_table(cells, number):
     df = pd.DataFrame(data=cells, index=None, columns=["X1", "Y1", "X2", "Y2", "Text"])
 
     df = df.sort_values(by='Y1')
@@ -66,5 +72,5 @@ def generate_table(cells):
         if new_column_length > 0:
             ws.column_dimensions[new_column_letter].width = new_column_length
 
-    wb.save('table.xlsx')
+    wb.save(f'excel/table{number}.xlsx')
     wb.close()

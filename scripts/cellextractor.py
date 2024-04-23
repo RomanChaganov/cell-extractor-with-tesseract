@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 import pytesseract
 import pandas as pd
-from generate_table import generate_table
+from scripts.generate_table import generate_table
 
 
 def load_image(file_name):
@@ -91,8 +91,8 @@ def get_text(image):
     return text
 
 
-if __name__ == '__main__':
-    image = load_image(sys.argv[1])
+def generate_tables(table_name, number):
+    image = load_image(table_name)
     resized_image = resize_image(image)
     thresh = binarization_image(resized_image)
     image_without_lines = remove_table_lines(thresh, resized_image)
@@ -120,6 +120,6 @@ if __name__ == '__main__':
         # cv2.imshow('cell', cropped)
         # cv2.waitKey(160)
         #exit()
-    generate_table(cells)
-    cv2.imshow('invert', cropped)
-    cv2.waitKey()
+    generate_table(cells, number)
+    # cv2.imshow('invert', cropped)
+    # cv2.waitKey()
