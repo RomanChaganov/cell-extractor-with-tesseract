@@ -1,4 +1,5 @@
 var canvas;
+var canvas1;
 var blob;
 
 
@@ -38,15 +39,28 @@ function send_btn_click()
   var modes = document.getElementsByName('mode');
   var mode;
   
-  modes.forEach(function(element) {
-    if (element.checked) mode = element.value;
-  });
+  for (var i = 0; i < modes.length; i++) {
+    if (modes[i].checked) mode = modes[i].value;
+  }
   
   var request = new XMLHttpRequest();
-  request.overrideMimeType('text/plain');
+  request.overrideMimeType('image/jpeg');
   var fd = new FormData();
   fd.append('mode', mode);
   fd.append('file', blob);
+  
+  request.onload = function() {
+    if (request.status == 200) {
+      var file_blob = request.response;
+      var url = URL.createObjectURL(file_blob);
+      //if (!file_blob.type.startsWith('image/')) {
+      //  console.log('Ответ не корректен!');
+      //  console.log(file_blob.type);
+      //  return;
+      //}
+      canvas1.src = url;
+    }
+  };
   
   request.onerror = function() {
       alert('Ошибка соединения');
@@ -60,6 +74,13 @@ function send_btn_click()
 
 function start()
 {
+  var images = document.getElementsByClassName('scale_img');
+  for (var i = 0; i < images.length; i++) {
+    images[i].addEventListener('click', function() {
+       this.classList.toggle('expanded');
+    });
+  }
+  
   canvas = document.getElementById('canvas');
   canvas.addEventListener('dragover', function(e) {
     e.preventDefault();
@@ -68,4 +89,6 @@ function start()
   canvas.addEventListener('drop', canvas_drop);
   send_btn = document.getElementById('send');
   send_btn.addEventListener('click', send_btn_click);
+  
+  canvas1 = document.getElementById('canvas1');
 }

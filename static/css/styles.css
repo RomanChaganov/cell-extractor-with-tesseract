@@ -12,7 +12,7 @@ body {
 #wrapper {
   box-sizing: border-box;
   width: 21cm;
-  height: 35cm;
+  height: 45cm;
   margin: 2cm auto;
   padding: 2cm 1cm 3cm 2cm;
   background-color: white;
@@ -47,11 +47,15 @@ main p {
   margin-bottom: 21pt;
 }
 
-main img {
+.image_fill img {
   width: 100%;
   height: 12cm;
   border: 1px solid black;
   object-fit: contain;
+}
+
+.scale_img.expanded {
+  transform: scale(2);
 }
 
 .image_fill p {
