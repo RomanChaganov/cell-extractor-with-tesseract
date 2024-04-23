@@ -1,5 +1,4 @@
 var canvas;
-var ctx;
 var blob;
 
 
@@ -9,13 +8,7 @@ function reader_onload(e)
   blob = new Blob([byteArray], { type: 'image/jpeg' });
   
   var url = URL.createObjectURL(blob);
-  var image = new Image();
-  image.onload = function(e) {
-    canvas.width = image.width;
-    canvas.height = image.height;   
-    ctx.drawImage(image, 0, 0);
-  }
-  image.src = url;
+  canvas.src = url;
 }
 
 
@@ -68,8 +61,6 @@ function send_btn_click()
 function start()
 {
   canvas = document.getElementById('canvas');
-  ctx = canvas.getContext('2d');
-  
   canvas.addEventListener('dragover', function(e) {
     e.preventDefault();
   });

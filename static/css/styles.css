@@ -47,10 +47,11 @@ main p {
   margin-bottom: 21pt;
 }
 
-main canvas {
+main img {
   width: 100%;
   height: 12cm;
   border: 1px solid black;
+  object-fit: contain;
 }
 
 .image_fill p {
