@@ -17,8 +17,14 @@ def color_range_replace(img_arr, start_range=(0, 0, 150),
     
     
 def get_blocks(image, mode='blocks'):   
-    with PyTessBaseAPI(lang=LANG, psm=PSM.AUTO, oem=OEM_TYPE) as api:
+    with PyTessBaseAPI(lang=LANG, psm=PSM.AUTO_OSD, oem=OEM_TYPE) as api:
         api.SetImage(image)
+        it = api.AnalyseLayout()
+        orientation, direction, order, deskew_angle = it.Orientation()
+        print("Orientation: {:d}".format(orientation))
+        print("WritingDirection: {:d}".format(direction))
+        print("TextlineOrder: {:d}".format(order))
+        print("Deskew angle: {:.4f}".format(deskew_angle))
         boxes = api.GetComponentImages(mode_to_ril[mode], True)
     return boxes
     
@@ -35,9 +41,15 @@ def generate_random_color(num):
 def rectangle_draw(image, boxes):
     overlay = Image.new('RGBA', image.size, (0, 0, 0, 0))
     draw = ImageDraw.Draw(overlay, 'RGBA')
+    colors = {}
     for (im, box, block_id, par_id) in boxes:
+        if block_id in colors:
+            color = colors[block_id]
+        else:
+            color = generate_random_color(block_id)
+            colors[block_id] = color
+            
         rect = (box['x'], box['y'], box['w'] + box['x'], box['h'] + box['y'])
-        color = generate_random_color(block_id)
         draw.rectangle(rect, fill=color)
     result = Image.alpha_composite(image, overlay)
     return result
