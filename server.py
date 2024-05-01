@@ -10,10 +10,12 @@ sys.path.insert(0, 'scripts')
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
-    
+
+
 @app.route('/upload', methods=['POST', 'GET'])
 def upload():
     mode = request.form.get('mode')
@@ -29,12 +31,12 @@ def upload():
     process_image(image)
     shutil.make_archive('excel_tables', 'zip', 'excel')
 
-    return "Успешно"
-
+    return send_file('excel_tables.zip', as_attachment=True)
 
 # @app.route('/download', methods=['GET'])
 # def download():
 #     return send_file(BytesIO(upload.data), download_name=upload.filename, as_attachment=True)
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8000, debug=True)

@@ -50,7 +50,7 @@ function send_btn_click()
   });
   
   var request = new XMLHttpRequest();
-  request.overrideMimeType('text/plain');
+  request.overrideMimeType('application/zip');
   var fd = new FormData();
   fd.append('mode', mode);
   fd.append('file', blob);
