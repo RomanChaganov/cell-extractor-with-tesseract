@@ -24,17 +24,21 @@
            и нажмите на кнопку "отправить".</p>
            
         <form name="send_form">
-          <p>Режим обработки:</p>
+<!--          <p>Режим обработки:</p>-->
           
-          <div class="radio_btn">
-            <p><label><input type="radio" name="mode" value="words" checked>Слова</label></p>
-            <p><label><input type="radio" name="mode" value="blocks">Блоки</label></p>
-            <p><label><input type="radio" name="mode" value="lines">Линии</label></p>
-          </div>
+<!--          <div class="radio_btn">-->
+<!--            <p><label><input type="radio" name="mode" value="words" checked>Слова</label></p>-->
+<!--            <p><label><input type="radio" name="mode" value="blocks">Блоки</label></p>-->
+<!--            <p><label><input type="radio" name="mode" value="lines">Линии</label></p>-->
+<!--          </div>-->
           
           <input type="button" value="Отправить" id="send">   
         </form>
-        
+        <h2>3. Полученные результаты</h2>
+        <div id="download-link">Таблицы:</div>
+        <div id="tables-container"></div>
+        <div id="recognized_text">Найденный текст:</div>
+        <div id="key_value">Найденные ключи и их значения:</div>
       </main>
       <footer></footer>
     </div>

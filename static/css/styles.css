@@ -60,3 +60,8 @@ main canvas {
 .radio_btn {
   margin: 0.2cm 0;
 }
+
+#tables-container img {
+  max-width: 100%;
+  max-height: 500px;
+}

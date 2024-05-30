@@ -1,9 +1,7 @@
 import os
 import shutil
-import sys
 import cv2
 import numpy as np
-import pytesseract
 from scripts.generate_table import generate_table
 from tesserocr import PyTessBaseAPI, OEM, RIL, PSM
 from PIL import Image

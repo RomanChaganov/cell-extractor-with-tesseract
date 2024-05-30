@@ -8,6 +8,7 @@ import shutil
 
 sys.path.insert(0, 'scripts')
 
+
 app = Flask(__name__)
 
 

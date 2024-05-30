@@ -57,18 +57,21 @@ function send_btn_click()
 
   request.onload = function() {
     if(request.status == 200) {
-        // Получаем ответ сервера в виде Blob (файла)
-        var fileBlob = request.response;
+      // Получаем ответ сервера в виде Blob (файла)
+      var fileBlob = request.response;
 
-        // Создаем ссылку для скачивания файла
-        var url = URL.createObjectURL(fileBlob);
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = 'excel_tables.zip'; // Указываем имя файла для скачивания
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+      // Создаем ссылку для скачивания файла
+      var url = URL.createObjectURL(fileBlob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'excel_tables.zip'; // Указываем имя файла для скачивания
+      a.textContent = 'Скачать файл с распознанными таблицами';
+      var downloadLinkContainer = document.getElementById('download-link');
+      downloadLinkContainer.innerHTML = 'Таблицы: '; // Очищаем предыдущие ссылки, если они были
+      downloadLinkContainer.appendChild(a);
+
+      // Отображаем фотографии таблиц
+      // displayTables();
     }
   };
 
@@ -81,6 +84,26 @@ function send_btn_click()
   request.send(fd);
 }
 
+function displayTables() {
+    var tablesContainer = document.getElementById('tables-container');
+    tablesContainer.innerHTML = ''; // Очищаем предыдущие фотографии таблиц
+
+    // Создаем и добавляем элементы <img> для каждой фотографии таблицы
+    var tableIndex = 0;
+    var tableFound = true;
+    while (tableFound) {
+      var tableImg = document.createElement('img');
+      tableImg.src = '../../bin/rotated_tables/table' + tableIndex + '.jpg';
+      tableImg.alt = 'Table ' + tableIndex;
+
+      tableImg.onerror = function () {
+        tableFound = false;
+      };
+
+      tablesContainer.appendChild(tableImg);
+      tableIndex++;
+    }
+  }
 
 function start()
 {
