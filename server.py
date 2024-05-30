@@ -20,7 +20,7 @@ def upload():
     image = Image.open(BytesIO(file.read()))
     image = image.convert('RGB')
     image = ImageOps.exif_transpose(image)
-    image = recognizer.recognize(image, mode)
+    image = recognizer.recognize(image, mode, color_repl=False)
     
     img_file = BytesIO()
     image = image.convert('RGB')
