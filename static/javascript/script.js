@@ -4,18 +4,11 @@ var blob;
 
 
 function reader_onload(e)
-{
+{ 
   var byteArray = new Uint8Array(e.target.result);
   blob = new Blob([byteArray], { type: 'image/jpeg' });
-  
   var url = URL.createObjectURL(blob);
-  var image = new Image();
-  image.onload = function(e) {
-    canvas.width = image.width;
-    canvas.height = image.height;   
-    ctx.drawImage(image, 0, 0);
-  }
-  image.src = url;
+  canvas.src = url;
 }
 
 
@@ -110,8 +103,12 @@ function displayTables(size) {
     let filename = 'bin/rotated_tables/table' + i + '.jpg'
     let tableImg = document.createElement('img');
     tableImg.classList.add('expnd');
+    tableImg.addEventListener('click', function() {
+      this.classList.toggle('expanded');
+    });
     tableImg.src = filename;
     tableImg.alt = 'Table ' + i;
+    
     tablesContainer.appendChild(tableImg);
   }
 }
@@ -122,8 +119,11 @@ function getTables() {
 
 function start()
 {
-  canvas = document.getElementById('canvas');
-  ctx = canvas.getContext('2d');
+  canvas = document.getElementById('img_main');
+  
+  canvas.addEventListener('click', function() {
+      this.classList.toggle('expanded');
+  });
   
   canvas.addEventListener('dragover', function(e) {
     e.preventDefault();

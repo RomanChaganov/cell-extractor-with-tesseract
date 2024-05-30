@@ -12,7 +12,8 @@ body {
 #wrapper {
   box-sizing: border-box;
   width: 21cm;
-  height: 35cm;
+  /* height: 45cm; */
+  height: auto;
   margin: 2cm auto;
   padding: 2cm 1cm 3cm 2cm;
   background-color: white;
@@ -20,6 +21,7 @@ body {
 
 header {
   border-bottom: 1px solid black;
+  display: inline-block;
 }
 
 header h1 {
@@ -27,6 +29,10 @@ header h1 {
   padding: 0;
   margin-bottom: 0.4cm;
   font-size: 16pt;
+}
+
+main {
+  display: inline-block;
 }
 
 main h2 {
@@ -47,10 +53,15 @@ main p {
   margin-bottom: 21pt;
 }
 
-main canvas {
+#img_main {
   width: 100%;
   height: 12cm;
   border: 1px solid black;
+  object-fit: contain;
+}
+
+#img_main.expanded {
+  transform: scale(2);
 }
 
 .image_fill p {
@@ -63,10 +74,14 @@ main canvas {
 
 .expnd {
   max-width: 100%;
-  max-height: 100px;
   object-fit: contain;
+  cursor: pointer;
 }
 
 .expnd.expanded {
   transform: scale(2);
+}
+
+footer {
+  display: inline-block;
 }
