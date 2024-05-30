@@ -1,6 +1,6 @@
 .venv
 .idea
-bin
+/bin
 cells*
 excel
 *.zip

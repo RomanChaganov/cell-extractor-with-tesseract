@@ -4,18 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c64ad59e-2dfe-487d-b273-1ea48bca0039" name="Changes" comment="Git ignore">
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+    <list default="true" id="c64ad59e-2dfe-487d-b273-1ea48bca0039" name="Changes" comment="Добавление ссылки вместо скачки">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/rotated_tables/table0.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/bin/rotated_tables/table0.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/rotated_tables/table1.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/bin/rotated_tables/table1.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/tables/table0.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/bin/tables/table0.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/tables/table1.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/bin/tables/table1.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/cellextractor.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/cellextractor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/javascript/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/javascript/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/rotate_img.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/rotate_img.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,7 +154,7 @@
       <workItem from="1716139267467" duration="6000" />
       <workItem from="1716141927955" duration="4156000" />
       <workItem from="1716195891652" duration="1796000" />
-      <workItem from="1717055007695" duration="15066000" />
+      <workItem from="1717055007695" duration="19472000" />
     </task>
     <task id="LOCAL-00001" summary="Added parse to Excel Table">
       <option name="closed" value="true" />
@@ -220,7 +212,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717055151094</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Добавление ссылки вместо скачки">
+      <option name="closed" value="true" />
+      <created>1717076131983</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1717076131983</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -243,14 +243,15 @@
     <MESSAGE value="Added scripts for table extraction + download" />
     <MESSAGE value="Added tesserocr" />
     <MESSAGE value="Git ignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="Git ignore" />
+    <MESSAGE value="Добавление ссылки вместо скачки" />
+    <option name="LAST_COMMIT_MESSAGE" value="Добавление ссылки вместо скачки" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/static/javascript/script.js</url>
-          <line>87</line>
+          <line>84</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="2" />
         </line-breakpoint>

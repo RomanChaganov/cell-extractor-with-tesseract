@@ -39,10 +39,11 @@ def rotate_img(image):
     # cv2.line(line_image,(coordinates[0],coordinates[1]),(coordinates[2],coordinates[3]),(255,35,0),5)
 
     angles = []
-    for line in lines:
-        angle = np.arctan2(line[0][3] - line[0][1], line[0][2] - line[0][0]) * 180/np.pi
-        if angle != 0:
-            angles.append(angle)
+    if not lines:
+        for line in lines:
+            angle = np.arctan2(line[0][3] - line[0][1], line[0][2] - line[0][0]) * 180/np.pi
+            if angle != 0:
+                angles.append(angle)
 
     # angles = np.array(angles)
     # angle = angles.mean()
