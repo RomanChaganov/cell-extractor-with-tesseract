@@ -65,6 +65,10 @@ function send_btn_click()
 
       // Отображаем фотографии таблиц
       getTables();
+      
+      getImageWithoutTables();
+      
+      getPairs();
     }
   };
 
@@ -75,6 +79,43 @@ function send_btn_click()
   request.responseType = 'blob';
   request.open('POST', '/upload');
   request.send(fd);
+}
+
+function getPairs() {
+  let request = new XMLHttpRequest();
+  request.overrideMimeType('text/html');
+  
+  request.onload = function() {
+    if(request.status == 200) {
+      let keyValue = document.getElementById('key_value');
+      keyValue.innerHTML = request.responseText;
+    }
+  }
+  
+  request.onerror = function() {
+    alert('Не ключ значение');
+  }
+  
+  let filename = 'bin/pairs.txt';
+  request.open('GET', filename);
+  request.send();
+}
+
+function getImageWithoutTables() {
+  let recognizedText = document.getElementById('recognized_text');
+  recognizedText.innerHTML = '';
+  
+  let withoutTableImg = document.createElement('img');
+  withoutTableImg.classList.add('expnd');
+  withoutTableImg.addEventListener('click', function() {
+    this.classList.toggle('expanded');
+  });
+  
+  let filename = 'bin/image_without_tables.jpg';
+  withoutTableImg.src = filename;
+  withoutTableImg.alt = 'Image without tables';
+  
+  recognizedText.appendChild(withoutTableImg);
 }
 
 function get_size(func) {

@@ -3,6 +3,7 @@ import shutil
 import cv2
 import numpy as np
 from scripts.generate_table import generate_table
+from scripts.config import TESSDATA_PATH
 from tesserocr import PyTessBaseAPI, OEM, RIL, PSM
 from PIL import Image
 
@@ -80,7 +81,7 @@ def generate_tables(table_name, number):
     contours = get_contours(thresh)
     mask = np.zeros(thresh.shape, dtype=np.uint8)
     cells = []
-    api = PyTessBaseAPI(lang='rus+eng', psm=PSM.SINGLE_BLOCK, oem=OEM.TESSERACT_LSTM_COMBINED, path=r'D:\Program\Tesseract-OCR\tessdata')
+    api = PyTessBaseAPI(lang='rus+eng', psm=PSM.SINGLE_BLOCK, oem=OEM.TESSERACT_LSTM_COMBINED, path=TESSDATA_PATH)
 
     if os.path.exists(f'cells{number}'):
         shutil.rmtree(f'cells{number}')
@@ -94,7 +95,7 @@ def generate_tables(table_name, number):
         cell_id += 1
         text = get_text(api, cropped)
         cells.append((x, y, x + w, y + h, text))
-        print(text)
+        # print(text)
         cv2.drawContours(mask, [contour], -1, (255, 255, 255), -1)
         cv2.drawContours(mask, [contour], -1, (255, 255, 255), -1)
         cropped = cv2.bitwise_and(image_without_lines, mask)

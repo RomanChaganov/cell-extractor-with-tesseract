@@ -16,6 +16,32 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     return render_template('index.html')
+    
+
+def generate_table(pairs):
+    text_list = ['<table>', '<tr>', '<th>Ключ</th>', '<th>Значение</th>', '</tr>']
+            
+    accum = []
+    for key, value in pairs:
+        if not key:
+            accum.append(value)
+            continue
+            
+        if len(accum) != 0:
+            text_list.append('<tr>')
+            text = '\n'.join(accum)
+            accum = []
+            text_list.append(f'<td></td>')
+            text_list.append(f'<td>{text}</td>')
+            text_list.append('</tr>')
+            
+        text_list.append('<tr>')
+        text_list.append(f'<td>{key}</td>')
+        text_list.append(f'<td>{value}</td>')
+        text_list.append('</tr>')
+    
+    text_list.append('</table>')
+    return text_list
 
 
 @app.route('/upload', methods=['POST', 'GET'])
@@ -30,7 +56,13 @@ def upload():
     image = image.convert('RGB')
     image = ImageOps.exif_transpose(image)
     image = np.array(image)
-    process_image(image)
+    pairs = process_image(image)
+    
+    pairs = generate_table(pairs)
+    
+    with open('bin/pairs.txt', 'w', encoding='utf-8') as f:
+        f.writelines(pairs)
+    
     shutil.make_archive('excel_tables', 'zip', 'excel')
 
     return send_file('excel_tables.zip', as_attachment=True)
@@ -43,9 +75,9 @@ def get_size():
     return jsonify({'size': size})
     
     
-@app.route('/bin/rotated_tables/<path:filename>', methods=['GET'])
+@app.route('/bin/<path:filename>', methods=['GET'])
 def get_image(filename):
-    return send_file('bin/rotated_tables/' + filename, mimetype='image/jpeg')
+    return send_file('bin/' + filename)
     
 
 # @app.route('/download', methods=['GET'])

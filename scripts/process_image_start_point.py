@@ -171,6 +171,8 @@ def process_image(image):
         n += 1
     cv.imwrite('bin/image_without_tables.jpg', image)
     pairs = extract_text(image)
-    print(pairs)
+
     for i in range(n):
         generate_tables(f"{out4rotated}/{table_name}{i}.jpg", i)
+        
+    return pairs
