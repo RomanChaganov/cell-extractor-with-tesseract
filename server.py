@@ -1,10 +1,11 @@
 import numpy as np
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, jsonify, send_from_directory
 from io import BytesIO
 from PIL import Image, ImageOps
 from scripts.process_image_start_point import process_image
 import sys
 import shutil
+import os
 
 sys.path.insert(0, 'scripts')
 
@@ -33,6 +34,19 @@ def upload():
     shutil.make_archive('excel_tables', 'zip', 'excel')
 
     return send_file('excel_tables.zip', as_attachment=True)
+    
+    
+@app.route('/get_size', methods=['GET'])
+def get_size():
+    dir_path = 'bin/rotated_tables'
+    size = len(os.listdir(dir_path))
+    return jsonify({'size': size})
+    
+    
+@app.route('/bin/rotated_tables/<path:filename>', methods=['GET'])
+def get_image(filename):
+    return send_file('bin/rotated_tables/' + filename, mimetype='image/jpeg')
+    
 
 # @app.route('/download', methods=['GET'])
 # def download():

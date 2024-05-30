@@ -80,7 +80,7 @@ def generate_tables(table_name, number):
     contours = get_contours(thresh)
     mask = np.zeros(thresh.shape, dtype=np.uint8)
     cells = []
-    api = PyTessBaseAPI(lang='rus+eng', psm=PSM.SINGLE_BLOCK, oem=OEM.TESSERACT_LSTM_COMBINED, path=r'C:\Program Files\Tesseract-OCR\tessdata')
+    api = PyTessBaseAPI(lang='rus+eng', psm=PSM.SINGLE_BLOCK, oem=OEM.TESSERACT_LSTM_COMBINED, path=r'D:\Program\Tesseract-OCR\tessdata')
 
     if os.path.exists(f'cells{number}'):
         shutil.rmtree(f'cells{number}')

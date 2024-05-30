@@ -17,7 +17,7 @@ def get_text(api, image):
 
 def extract_text(image):
     pairs = []
-    api = PyTessBaseAPI(lang='rus+eng', psm=PSM.AUTO, oem=OEM.TESSERACT_LSTM_COMBINED, path=r'C:\Program Files\Tesseract-OCR\tessdata')
+    api = PyTessBaseAPI(lang='rus+eng', psm=PSM.AUTO, oem=OEM.TESSERACT_LSTM_COMBINED, path=r'D:\Program\Tesseract-OCR\tessdata')
     text = get_text(api, image)
     texts = [i for i in text.split('\n') if i]
     for text in texts:

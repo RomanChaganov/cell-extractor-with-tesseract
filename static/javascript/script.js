@@ -71,7 +71,7 @@ function send_btn_click()
       downloadLinkContainer.appendChild(a);
 
       // Отображаем фотографии таблиц
-      // displayTables();
+      getTables();
     }
   };
 
@@ -84,26 +84,41 @@ function send_btn_click()
   request.send(fd);
 }
 
-function displayTables() {
-    var tablesContainer = document.getElementById('tables-container');
-    tablesContainer.innerHTML = ''; // Очищаем предыдущие фотографии таблиц
-
-    // Создаем и добавляем элементы <img> для каждой фотографии таблицы
-    var tableIndex = 0;
-    var tableFound = true;
-    while (tableFound) {
-      var tableImg = document.createElement('img');
-      tableImg.src = '../../bin/rotated_tables/table' + tableIndex + '.jpg';
-      tableImg.alt = 'Table ' + tableIndex;
-
-      tableImg.onerror = function () {
-        tableFound = false;
-      };
-
-      tablesContainer.appendChild(tableImg);
-      tableIndex++;
+function get_size(func) {
+  let request = new XMLHttpRequest();
+  request.overrideMimeType('application/json');
+  request.onload = function() {
+    if(request.status == 200) {
+      let data = JSON.parse(request.responseText);
+      func(data['size']);
     }
   }
+  
+  request.onerror = function() {
+    alert('Не получил размер');
+  }
+  
+  request.open('GET', '/get_size');
+  request.send();
+}
+
+function displayTables(size) {
+  let tablesContainer = document.getElementById('tables-container');
+  tablesContainer.innerHTML = '';
+  
+  for (let i = 0; i < size; i++) {
+    let filename = 'bin/rotated_tables/table' + i + '.jpg'
+    let tableImg = document.createElement('img');
+    tableImg.classList.add('expnd');
+    tableImg.src = filename;
+    tableImg.alt = 'Table ' + i;
+    tablesContainer.appendChild(tableImg);
+  }
+}
+
+function getTables() {
+  get_size(displayTables);
+}
 
 function start()
 {

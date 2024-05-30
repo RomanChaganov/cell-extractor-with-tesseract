@@ -61,7 +61,12 @@ main canvas {
   margin: 0.2cm 0;
 }
 
-#tables-container img {
+.expnd {
   max-width: 100%;
-  max-height: 500px;
+  max-height: 100px;
+  object-fit: contain;
+}
+
+.expnd.expanded {
+  transform: scale(2);
 }
