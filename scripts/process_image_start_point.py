@@ -6,6 +6,8 @@ import scripts.utils as utils
 from scripts.rotate_img import rotate_img
 from scripts.table import Table
 from scripts.cellextractor import generate_tables
+from scripts.extract_text import extract_text
+
 
 # =====================================================
 # IMAGE LOADING
@@ -112,7 +114,6 @@ def process_image(image):
 
         # Create a new instance of a table
         table = Table(rect[0], rect[1], rect[2], rect[3])
-
         # Get an n-dimensional array of the coordinates of the table joints
         joint_coords = []
         for j in range(len(table_joints)):
@@ -156,9 +157,8 @@ def process_image(image):
     os.makedirs("excel")
 
     n = 0
-    for table in list(tables):
-        table_entries = table.get_table_entries()
 
+    for table in list(tables):
         table_roi = image[table.y:table.y + table.h, table.x:table.x + table.w]
         table_roi = cv.resize(table_roi, (table.w * mult, table.h * mult))
 
@@ -166,10 +166,11 @@ def process_image(image):
 
         rotated = rotate_img(table_roi)
         cv.imwrite(out4rotated + table_name + str(n) + '.jpg', rotated)
-
-        num_img = 0
+        image = cv.rectangle(image, (table.x, table.y), (table.x + table.w, table.y + table.h), (255, 255, 255), -1)
 
         n += 1
-
+    cv.imwrite('bin/image_without_tables.jpg', image)
+    pairs = extract_text(image)
+    print(pairs)
     for i in range(n):
         generate_tables(f"{out4rotated}/{table_name}{i}.jpg", i)
